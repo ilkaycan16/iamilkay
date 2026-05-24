@@ -1,0 +1,106 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import { brand, navItems, tickerItems } from "@/data/site";
+
+const languages = ["EN", "AR", "FR", "ES"];
+
+export function MarketTicker() {
+  const items = [...tickerItems, ...tickerItems];
+
+  return (
+    <div className="fixed left-0 top-0 z-50 h-10 w-full overflow-hidden border-b border-white/10 bg-ink/95 backdrop-blur-xl">
+      <div className="animate-[ticker_48s_linear_infinite] flex h-full w-max items-center gap-10">
+        {items.map((item, index) => (
+          <span key={`${item}-${index}`} className="whitespace-nowrap text-[10px] font-black uppercase tracking-[.18em] text-slate-400">
+            <span className="text-white">{item.split(" / ")[0]}</span>
+            <span className="mx-2 text-market">/</span>
+            {item.split(" / ")[1]}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function Header() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <MarketTicker />
+      <header className="fixed left-0 top-10 z-40 w-full border-b border-white/0 px-4 py-4 transition-all md:px-8 xl:px-16">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-5 rounded-[28px] border border-white/10 bg-ink/70 px-4 py-3 shadow-premium backdrop-blur-2xl">
+          <Link href="/" className="flex min-w-max items-center gap-3" aria-label="IAMILKAY home">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl border border-white/25 bg-gradient-to-br from-white/20 via-slate-900 to-black text-[17px] font-black shadow-glow">
+              I
+            </span>
+            <span className="grid gap-1 text-sm font-black uppercase leading-none tracking-[.16em]">
+              {brand.name}
+              <small className="text-[9px] font-black uppercase tracking-[.25em] text-slate-400">{brand.region}</small>
+            </span>
+          </Link>
+
+          <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[.035] p-1 lg:flex">
+            {navItems.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-full px-4 py-2 text-xs font-extrabold transition ${
+                    active ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[.035] px-3 py-2 text-xs font-black text-slate-300 md:flex">
+              <span>🇬🇧</span>
+              <select aria-label="Language" className="bg-transparent text-xs font-black text-white outline-none">
+                {languages.map((language) => (
+                  <option key={language}>{language}</option>
+                ))}
+              </select>
+            </div>
+            <Link href="/contact" className="hidden rounded-full bg-white px-5 py-3 text-xs font-black uppercase tracking-[.12em] text-ink shadow-glow transition hover:bg-signal md:inline-flex">
+              Enterprise Desk
+            </Link>
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded={open}
+              onClick={() => setOpen((value) => !value)}
+              className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[.04] text-white lg:hidden"
+            >
+              {open ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {open ? (
+        <div className="fixed inset-x-4 top-[118px] z-50 grid gap-2 rounded-[28px] border border-white/10 bg-ink/95 p-4 shadow-premium backdrop-blur-2xl lg:hidden">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className="rounded-2xl px-4 py-4 text-sm font-extrabold text-slate-200 transition hover:bg-white/10 hover:text-white"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      ) : null}
+    </>
+  );
+}
