@@ -33,15 +33,15 @@ export function Header() {
   return (
     <>
       <MarketTicker />
-      <header className="fixed left-0 top-10 z-40 w-full border-b border-white/0 px-4 py-4 transition-all md:px-8 xl:px-16">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-5 rounded-[28px] border border-white/10 bg-ink/70 px-4 py-3 shadow-premium backdrop-blur-2xl">
-          <Link href="/" className="flex min-w-max items-center gap-3" aria-label="IAMILKAY home">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl border border-white/25 bg-gradient-to-br from-white/20 via-slate-900 to-black text-[17px] font-black shadow-glow">
+      <header className="fixed left-0 top-10 z-40 w-full border-b border-white/0 px-3 py-3 transition-all md:px-8 md:py-4 xl:px-16">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 rounded-[22px] border border-white/10 bg-ink/70 px-3 py-3 shadow-premium backdrop-blur-2xl md:gap-5 md:rounded-[28px] md:px-4">
+          <Link href="/" className="flex min-w-0 flex-1 items-center gap-3 lg:flex-none" aria-label="IAMILKAY home">
+            <span className="grid h-10 w-10 flex-none place-items-center rounded-2xl border border-white/25 bg-gradient-to-br from-white/20 via-slate-900 to-black text-[15px] font-black shadow-glow md:h-12 md:w-12 md:text-[17px]">
               I
             </span>
-            <span className="grid gap-1 text-sm font-black uppercase leading-none tracking-[.16em]">
+            <span className="grid min-w-0 gap-1 text-[13px] font-black uppercase leading-none tracking-[.1em] md:text-sm md:tracking-[.16em]">
               {brand.name}
-              <small className="text-[9px] font-black uppercase tracking-[.25em] text-slate-400">{brand.region}</small>
+              <small className="hidden truncate text-[9px] font-black uppercase tracking-[.18em] text-slate-400 sm:block md:tracking-[.25em]">{brand.region}</small>
             </span>
           </Link>
 
@@ -62,7 +62,7 @@ export function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-none items-center gap-2 md:gap-3">
             <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[.035] px-3 py-2 text-xs font-black text-slate-300 md:flex">
               <span>🇬🇧</span>
               <select aria-label="Language" className="bg-transparent text-xs font-black text-white outline-none">
@@ -79,7 +79,7 @@ export function Header() {
               aria-label="Toggle menu"
               aria-expanded={open}
               onClick={() => setOpen((value) => !value)}
-              className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[.04] text-white lg:hidden"
+              className="grid h-11 w-11 flex-none place-items-center rounded-2xl border border-white/10 bg-white/[.04] text-white lg:hidden md:h-12 md:w-12"
             >
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -88,13 +88,13 @@ export function Header() {
       </header>
 
       {open ? (
-        <div className="fixed inset-x-4 top-[118px] z-50 grid gap-2 rounded-[28px] border border-white/10 bg-ink/95 p-4 shadow-premium backdrop-blur-2xl lg:hidden">
+        <div className="fixed inset-x-3 top-[112px] z-50 grid max-h-[calc(100vh-132px)] gap-2 overflow-y-auto rounded-[24px] border border-white/10 bg-ink/95 p-3 shadow-premium backdrop-blur-2xl sm:inset-x-4 sm:top-[128px] sm:max-h-[calc(100vh-148px)] sm:rounded-[28px] sm:p-4 lg:hidden">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="rounded-2xl px-4 py-4 text-sm font-extrabold text-slate-200 transition hover:bg-white/10 hover:text-white"
+              className="rounded-2xl px-4 py-3 text-sm font-extrabold text-slate-200 transition hover:bg-white/10 hover:text-white sm:py-4"
             >
               {item.label}
             </Link>
