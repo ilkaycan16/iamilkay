@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 const requiredFields = ["name", "email", "department", "message"] as const;
+const defaultMailTo = "connect@ilkaybatur.com";
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,10 +29,16 @@ export async function POST(request: NextRequest) {
     const host = process.env.SMTP_HOST;
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
-    const to = process.env.MAIL_TO || "info@iamilkay.co.uk";
+    const to = process.env.MAIL_TO || defaultMailTo;
 
     if (!host || !user || !pass) {
-      return NextResponse.json({ error: "Mail service is not configured" }, { status: 503 });
+      return NextResponse.json(
+        {
+          error: "Mail service is not configured",
+          fallbackEmail: defaultMailTo
+        },
+        { status: 503 }
+      );
     }
 
     const transporter = nodemailer.createTransport({

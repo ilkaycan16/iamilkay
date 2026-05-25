@@ -21,7 +21,8 @@ npm run dev
 
 Copy `.env.example` to `.env.local` and configure SMTP variables.
 
-All contact submissions are sent to `MAIL_TO`, defaulting to `info@iamilkay.co.uk`.
+All contact submissions are sent to `MAIL_TO`, defaulting to `connect@ilkaybatur.com`.
+If SMTP is not configured yet, the frontend opens a prepared email to `connect@ilkaybatur.com` as a fallback.
 
 ## Pages
 

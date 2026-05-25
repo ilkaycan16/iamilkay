@@ -5,6 +5,23 @@ import { departments } from "@/data/site";
 
 type FormState = "idle" | "sending" | "success" | "error";
 
+const fallbackEmail = "connect@ilkaybatur.com";
+
+function buildMailto(payload: Record<string, FormDataEntryValue>) {
+  const subject = `IAMILKAY inquiry: ${String(payload.department || "Enterprise")}`;
+  const body = [
+    `Name: ${String(payload.name || "")}`,
+    `Company: ${String(payload.company || "-")}`,
+    `Email: ${String(payload.email || "")}`,
+    `Phone: ${String(payload.phone || "-")}`,
+    `Department: ${String(payload.department || "-")}`,
+    "",
+    String(payload.message || "")
+  ].join("\n");
+
+  return `mailto:${fallbackEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
 export function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
   const [message, setMessage] = useState("");
@@ -29,8 +46,16 @@ export function ContactForm() {
       return;
     }
 
+    if (response.status === 503) {
+      window.location.href = buildMailto(payload);
+      setState("success");
+      setMessage("Your email app has opened with the inquiry prepared for connect@ilkaybatur.com.");
+      event.currentTarget.reset();
+      return;
+    }
+
     setState("error");
-    setMessage("The message could not be sent. Please check the fields or email info@iamilkay.co.uk directly.");
+    setMessage("The message could not be sent. Please check the fields or email connect@ilkaybatur.com directly.");
   }
 
   return (
