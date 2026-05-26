@@ -5,8 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { brand, navItems, tickerItems } from "@/data/site";
-
-const languages = ["EN", "AR", "FR", "ES"];
+import { LanguageSelect, useLanguage } from "@/components/LanguageProvider";
 
 export function MarketTicker() {
   const items = [...tickerItems, ...tickerItems];
@@ -29,6 +28,7 @@ export function MarketTicker() {
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <>
@@ -56,7 +56,7 @@ export function Header() {
                     active ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  {item.label}
+                  {t(item.label)}
                 </Link>
               );
             })}
@@ -65,14 +65,10 @@ export function Header() {
           <div className="flex flex-none items-center gap-2 md:gap-3">
             <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[.035] px-3 py-2 text-xs font-black text-slate-300 md:flex">
               <span>🇬🇧</span>
-              <select aria-label="Language" className="bg-transparent text-xs font-black text-white outline-none">
-                {languages.map((language) => (
-                  <option key={language}>{language}</option>
-                ))}
-              </select>
+              <LanguageSelect />
             </div>
             <Link href="/contact" className="hidden rounded-full bg-white px-5 py-3 text-xs font-black uppercase tracking-[.12em] text-ink shadow-glow transition hover:bg-signal md:inline-flex">
-              Enterprise Desk
+              {t("Enterprise Desk")}
             </Link>
             <button
               type="button"
@@ -89,6 +85,10 @@ export function Header() {
 
       {open ? (
         <div className="fixed inset-x-3 top-[112px] z-50 grid max-h-[calc(100vh-132px)] gap-2 overflow-y-auto rounded-[24px] border border-white/10 bg-ink/95 p-3 shadow-premium backdrop-blur-2xl sm:inset-x-4 sm:top-[128px] sm:max-h-[calc(100vh-148px)] sm:rounded-[28px] sm:p-4 lg:hidden">
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[.04] px-4 py-3">
+            <span className="text-xs font-black uppercase tracking-[.18em] text-slate-400">Language</span>
+            <LanguageSelect compact />
+          </div>
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -96,7 +96,7 @@ export function Header() {
               onClick={() => setOpen(false)}
               className="rounded-2xl px-4 py-3 text-sm font-extrabold text-slate-200 transition hover:bg-white/10 hover:text-white sm:py-4"
             >
-              {item.label}
+              {t(item.label)}
             </Link>
           ))}
         </div>

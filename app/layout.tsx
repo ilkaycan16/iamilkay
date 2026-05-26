@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { Header } from "@/components/Header";
 import { FloatingActions, Footer } from "@/components/Footer";
+import { LanguageProvider } from "@/components/LanguageProvider";
 import { brand } from "@/data/site";
 
 const inter = Inter({
@@ -36,10 +37,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased">
-        <Header />
-        {children}
-        <Footer />
-        <FloatingActions />
+        <LanguageProvider>
+          <Header />
+          {children}
+          <Footer />
+          <FloatingActions />
+        </LanguageProvider>
         <script
           type="application/ld+json"
           suppressHydrationWarning

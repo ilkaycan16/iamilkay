@@ -4,6 +4,31 @@ import nodemailer from "nodemailer";
 const requiredFields = ["name", "email", "department", "message"] as const;
 const defaultMailTo = "connect@ilkaybatur.com";
 
+async function sendViaFormSubmit(body: Record<string, unknown>, to: string) {
+  const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({
+      _subject: `IAMILKAY® inquiry: ${String(body.department)}`,
+      _template: "table",
+      _captcha: "false",
+      name: String(body.name),
+      company: String(body.company || "-"),
+      email: String(body.email),
+      phone: String(body.phone || "-"),
+      department: String(body.department),
+      message: String(body.message)
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error("FormSubmit delivery failed");
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -32,13 +57,8 @@ export async function POST(request: NextRequest) {
     const to = process.env.MAIL_TO || defaultMailTo;
 
     if (!host || !user || !pass) {
-      return NextResponse.json(
-        {
-          error: "Mail service is not configured",
-          fallbackEmail: defaultMailTo
-        },
-        { status: 503 }
-      );
+      await sendViaFormSubmit(body, to);
+      return NextResponse.json({ ok: true, provider: "formsubmit" });
     }
 
     const transporter = nodemailer.createTransport({
