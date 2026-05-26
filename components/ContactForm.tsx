@@ -56,7 +56,7 @@ export function ContactForm() {
         </label>
         <label className="grid gap-2 md:col-span-2">
           <span className="text-sm font-black text-slate-300">{t("Message")}</span>
-          <textarea name="message" required minLength={10} className="min-h-40 rounded-2xl border border-white/10 bg-ink/70 px-4 py-4 text-white outline-none transition focus:border-signal" placeholder="Describe your business, channels, current systems and growth target." />
+          <textarea name="message" required minLength={10} className="min-h-40 rounded-2xl border border-white/10 bg-ink/70 px-4 py-4 text-white outline-none transition focus:border-signal" placeholder={t("Describe your business, channels, current systems and growth target.")} />
         </label>
       </div>
       <button disabled={state === "sending"} className="mt-6 rounded-full bg-white px-7 py-4 text-sm font-black uppercase tracking-[.12em] text-ink transition hover:bg-signal disabled:opacity-60" type="submit">
@@ -64,7 +64,7 @@ export function ContactForm() {
       </button>
       {message ? (
         <p className={`mt-4 rounded-2xl border px-4 py-3 text-sm font-bold ${state === "success" ? "border-market/40 text-green-200" : "border-red-300/40 text-red-200"}`}>
-          {message}
+          {t(message)}
         </p>
       ) : null}
     </form>

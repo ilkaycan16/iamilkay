@@ -9,15 +9,16 @@ import { LanguageSelect, useLanguage } from "@/components/LanguageProvider";
 
 export function MarketTicker() {
   const items = [...tickerItems, ...tickerItems];
+  const { t } = useLanguage();
 
   return (
     <div className="fixed left-0 top-0 z-50 h-10 w-full overflow-hidden border-b border-white/10 bg-ink/95 backdrop-blur-xl">
       <div className="animate-[ticker_48s_linear_infinite] flex h-full w-max items-center gap-10">
         {items.map((item, index) => (
           <span key={`${item}-${index}`} className="whitespace-nowrap text-[10px] font-black uppercase tracking-[.18em] text-slate-400">
-            <span className="text-white">{item.split(" / ")[0]}</span>
+            <span className="text-white">{t(item).split(" / ")[0]}</span>
             <span className="mx-2 text-market">/</span>
-            {item.split(" / ")[1]}
+            {t(item).split(" / ")[1]}
           </span>
         ))}
       </div>
@@ -86,7 +87,7 @@ export function Header() {
       {open ? (
         <div className="fixed inset-x-3 top-[112px] z-50 grid max-h-[calc(100vh-132px)] gap-2 overflow-y-auto rounded-[24px] border border-white/10 bg-ink/95 p-3 shadow-premium backdrop-blur-2xl sm:inset-x-4 sm:top-[128px] sm:max-h-[calc(100vh-148px)] sm:rounded-[28px] sm:p-4 lg:hidden">
           <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[.04] px-4 py-3">
-            <span className="text-xs font-black uppercase tracking-[.18em] text-slate-400">Language</span>
+            <span className="text-xs font-black uppercase tracking-[.18em] text-slate-400">{t("Language")}</span>
             <LanguageSelect compact />
           </div>
           {navItems.map((item) => (
